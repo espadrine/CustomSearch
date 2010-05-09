@@ -88,6 +88,7 @@ document.getElementById('navcnt').insertAdjacentHTML("afterend",
 var bottle = document.getElementById('bottle');
 var cur = document.getElementsByClassName('cur')[0]
 function fillIfLow() {
+  if(!cur) return null; // if very few results...
   if(elTotInView(document.getElementsByClassName('l')[els.length-4])==0) {
     cur.removeAttribute('id');
     cur = cur.nextSibling;

@@ -7,7 +7,6 @@
     "128": "search128.png"
   },
   "permissions": ["tabs"],
-  "background_script
   "content_scripts": [
     {
       "matches": [
