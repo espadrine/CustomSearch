@@ -13,9 +13,11 @@ function setInit() {
         setEl(Number(this.id))},false);
   }
 }
+var cur = null;
 function init() {
   setInit();
   setEl(el);
+  cur = document.getElementsByClassName('cur')[0]
   fillIfLow();
 }
 init();
@@ -86,16 +88,12 @@ onkeydown = function(e) {
 document.getElementById('navcnt').insertAdjacentHTML("afterend",
     '<iframe id="bottle" style="display:none"></iframe>');
 var bottle = document.getElementById('bottle');
-var cur = document.getElementsByClassName('cur')[0]
 function fillIfLow() {
   if(!cur) return null; // if very few results...
   if(elTotInView(document.getElementsByClassName('l')[els.length-4])==0) {
-    cur.removeAttribute('id');
-    cur = cur.nextSibling;
-    cur.setAttribute('id', 'cur');
     // fill in the bottle of searches.
-    bottle.src = cur.getElementsByTagName('a')[0].getAttribute('href');
-    setTimeout(fill, 1000);
+    bottle.src = cur.nextSibling.getElementsByTagName('a')[0].getAttribute('href');
+    setTimeout(fill, 1000); // enough time to load.
   }
   setTimeout(fillIfLow, 1000);
 }
@@ -103,4 +101,8 @@ function fill() {
   var nextEntries = bottle.contentDocument.getElementById('res').getElementsByTagName('ol')[0].innerHTML;
   document.getElementById('res').getElementsByTagName('ol')[0].insertAdjacentHTML("beforeend", nextEntries);
   setInit();
+  // update current bottleful of searches.
+  cur = bottle.contentDocument.getElementsByClassName('cur')[0]
+  // don't show it.
+  bottle.contentDocument.getElementsByTagName('body')[0].setAttribute('style', 'display:none');
 }
