@@ -1,5 +1,5 @@
 // Copyright (c) Thaddee Tyl. All rights reserved.
-var els = [];
+var els = []; // list of entry items' hrefs.
 var el = 0; // current element.
 function setInit() {
   els = [];
@@ -13,7 +13,7 @@ function setInit() {
         setEl(Number(this.id))},false);
   }
 }
-var cur = null;
+var cur = null;  // one 'o' out of Gooooooooogle (bottom of page).
 function init() {
   setInit();
   setEl(el);
@@ -81,6 +81,10 @@ onkeydown = function(e) {
       lst.value = val;
       return false;
     }
+  } else if(code==27){ // lst is focused; ESC pressed
+    var ls = document.getElementsByClassName('l');
+    ls[el].focus();
+    ls[el].blur();
   }
 }
 
@@ -90,7 +94,7 @@ document.getElementById('navcnt').insertAdjacentHTML("afterend",
 var bottle = document.getElementById('bottle');
 function fillIfLow() {
   if(!cur) return null; // if very few results...
-  if(elTotInView(document.getElementsByClassName('l')[els.length-4])==0) {
+  if(bottle && elTotInView(document.getElementsByClassName('l')[els.length-4])==0) {
     // fill in the bottle of searches.
     bottle.src = cur.nextSibling.getElementsByTagName('a')[0].getAttribute('href');
     setTimeout(fill, 1000); // enough time to load.
@@ -98,6 +102,7 @@ function fillIfLow() {
   setTimeout(fillIfLow, 1000);
 }
 function fill() {
+  //var bottle = document.getElementById('bottle');
   var nextEntries = bottle.contentDocument.getElementById('res').getElementsByTagName('ol')[0].innerHTML;
   document.getElementById('res').getElementsByTagName('ol')[0].insertAdjacentHTML("beforeend", nextEntries);
   setInit();
