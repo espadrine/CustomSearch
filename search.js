@@ -2,15 +2,21 @@
 var els = []; // list of entry items' hrefs.
 var el = 0; // current element.
 function setInit() {
-  els = [];
-  var domEls = document.getElementsByClassName("l");
+  els = []; // emptying the crowded list of entries' links.
+  var domEls = document.getElementsByClassName("l"); // list of entries.
   for(var i=0; i<domEls.length; i++) {
     els.push(domEls[i].href);
-    domEls[i].style.position = 'relative';
+    domEls[i].style.position = 'relative'; // to shift them by 1px.
     var parnt = domEls[i].parentNode.parentNode;
     parnt.setAttribute('id', i);
     parnt.addEventListener('click',function() {
         setEl(Number(this.id))},false);
+    // show number.
+    if(i%5==0&&i!=0) {
+      if(parnt.previousSibling.id != 'num')
+        parnt.insertAdjacentHTML('beforebegin',
+       '<span id="num" style="color:#6b90da;background-color:#f0f7f9;border-radius:10px">'+ i+'</span>');
+    }
   }
 }
 var cur = null;  // one 'o' out of Gooooooooogle (bottom of page).
