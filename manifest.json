@@ -1,6 +1,6 @@
 {
   "name": "CustomSearch",
-  "version": "1.7",
+  "version": "1.8",
   "description": "Google Search enhanced - keyboard shortcuts and infinite scrolling.",
   "icons": {
     "48": "search48.png",

@@ -13,7 +13,7 @@ function setInit() {
         setEl(Number(this.id))},false);
     // show number.
     if(i%5==0&&i!=0) {
-      if(parnt.previousSibling.id != 'num')
+      if(parnt.previousSibling && parnt.previousSibling.id != 'num')
         parnt.insertAdjacentHTML('beforebegin',
        '<span id="num" style="color:#6b90da;background-color:#f0f7f9;border-radius:10px">'+ i+'</span>');
     }
