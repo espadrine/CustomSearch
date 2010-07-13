@@ -1,0 +1,2 @@
+<!DOCTYPE html>
+<script>chrome.extension.onRequest.addListener(function(r,s,sendRes) { if( r.newtab ) chrome.tabs.create({url:r.newtab,selected:false});sendRes({})});</script>

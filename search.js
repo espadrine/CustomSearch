@@ -78,6 +78,8 @@ onkeydown = function(e) {
       setEl(el-1);
     } else if(code==79 || code==13) {  // O / ENTER
       location = els[el];
+    } else if(code==76) {  // L
+      chrome.extension.sendRequest({newtab:els[el]},function(r){});
     } else if(code==191) {  // /
       var lst = document.getElementsByClassName('lst')[0];
       lst.scrollIntoView(false);
