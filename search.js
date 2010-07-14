@@ -62,7 +62,7 @@ function scrollTillView(el) {
   }
 }
 
-var lstFocused = false;
+var lstFocused = false;  // is the query input focused?
 document.getElementsByClassName('lst')[0].onfocus = function(e) {
   lstFocused = true;
 }
