@@ -12,21 +12,28 @@ function setInit() {
     parnt.addEventListener('click',function() {
         setEl(Number(this.id))},false);
     // show number.
-    if(i%5==0&&i!=0) {
-      if(parnt.previousSibling && parnt.previousSibling.id != 'num')
+    if(i%10==0&&i!=0) {
+      if(parnt.previousSibling && parnt.previousSibling.className != 'num')
         parnt.insertAdjacentHTML('beforebegin',
-       '<span id="num" style="color:#6b90da;background-color:#f0f7f9;border-radius:10px">'+ i+'</span>');
+       '<div class="num" style="font-size:small;font-weight:bold;height:32px;line-height:32px;">Page '+(Math.floor(i/10)+1)+'</div>');
     }
   }
 }
 var cur = null;  // one 'o' out of Gooooooooogle (bottom of page).
-function init() {
-  setInit();
-  setEl(el);
-  cur = document.getElementsByClassName('cur')[0]
-  fillIfLow();
-}
-init();
+var initTries = function() {
+  var times = 0;
+  (function init() {
+    if(document.getElementsByClassName('l').length>0
+       && document.location.pathname!='/images') {
+      setInit();
+      setEl(el);
+      cur = document.getElementsByClassName('cur')[0];
+      fillIfLow();
+    } else if(times++<100) setTimeout(500,init);
+  })();
+};
+initTries();
+document.body.onhashchange = initTries;
 
 // 1. SHORTCUTS.
 function setEl(index) {
@@ -62,22 +69,26 @@ function scrollTillView(el) {
   }
 }
 
-var lstFocused = false;  // is the query input focused?
-document.getElementsByClassName('lst')[0].onfocus = function(e) {
-  lstFocused = true;
-}
-document.getElementsByClassName('lst')[0].onblur = function(e) {
-  lstFocused = false;
-}
+var lstFocus = (function(){  // is the query input focused?
+  var lstFocused = document.getElementsByClassName('lst')[0].autofocus;
+  document.getElementsByClassName('lst')[0].onfocus =
+      function(){lstFocused = true};
+  document.getElementsByClassName('lst')[0].onblur =
+      function(){lstFocused = false};
+  return function(f){
+    if(f!==undefined) lstFocused = f;
+    else return lstFocused;
+  }
+})();
 onkeydown = function(e) {
   var code = e.keyCode;
-  if(!lstFocused) {
+  if(!lstFocus()) {
     if(code==74 && el<els.length-1) {  // J
       setEl(el+1);
     } else if(code==75 && el>0) {  // K
       setEl(el-1);
     } else if(code==79 || code==13) {  // O / ENTER
-      location = els[el];
+      if(els[el]!==undefined) location = els[el];
     } else if(code==76) {  // L
       chrome.extension.sendRequest({newtab:els[el]},function(r){});
     } else if(code==191) {  // /
@@ -97,7 +108,7 @@ onkeydown = function(e) {
 }
 
 // 2. INFINITE SCROLLING.
-document.getElementById('navcnt').insertAdjacentHTML("afterend",
+document.body.insertAdjacentHTML("beforeend",
     '<iframe id="bottle" style="display:none"></iframe>');
 var bottle = document.getElementById('bottle');
 function fillIfLow() {
